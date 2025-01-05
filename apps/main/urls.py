@@ -1,6 +1,9 @@
 from django.urls import path
-from apps.main.views import home
+
+# Views
+from apps.main.views import home, delete_item
 
 urlpatterns = [
-    path('', home, name="home")
+    path('', home, name="home"),
+    path('delete/<int:item_id>/', delete_item, name='delete_item'),
 ]
