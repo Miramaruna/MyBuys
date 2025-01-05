@@ -1,0 +1,103 @@
+/* style.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
+
+main {
+    max-width: 600px;
+    margin: 2rem auto;
+    background: white;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+form {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    padding: 0.5rem 1rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+ul.shopping-list {
+    list-style: none;
+    padding: 0;
+}
+
+ul.shopping-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.delete-form button {
+    background-color: #f44336;
+}
+
+.delete-form button:hover {
+    background-color: #e53935;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список покупок</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Список покупок</h1>
+    </header>
+    <main>
+        <form action="{% url 'add_item' %}" method="POST">
+            {% csrf_token %}
+            <input type="text" name="item" placeholder="Добавить покупку" required>
+            <button type="submit">Добавить</button>
+        </form>
+        <ul class="shopping-list">
+            {% for item in items %}
+            <li>
+                <span>{{ item.name }}</span>
+                <form action="{% url 'delete_item' item.id %}" method="POST" class="delete-form">
+                    {% csrf_token %}
+                    <button type="submit">Удалить</button>
+                </form>
+            </li>
+            {% empty %}
+            <li>Ваш список пока пуст</li>
+            {% endfor %}
+        </ul>
+    </main>
+</body>
+</html>
